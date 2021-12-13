@@ -1,11 +1,17 @@
-import Cart from './components/Cart/Cart';
-import Layout from './components/Layout/Layout';
-import Products from './components/Shop/Products';
+import Cart from "./components/Cart/Cart";
+import Layout from "./components/Layout/Layout";
+import Products from "./components/Shop/Products";
+
+import { useSelector } from "react-redux";
 
 function App() {
+  const showing = useSelector((state) => state.cart.showing);
+
+  console.log(showing);
+
   return (
     <Layout>
-      <Cart />
+      {showing && <Cart />}
       <Products />
     </Layout>
   );
