@@ -1,28 +1,43 @@
-import classes from './CartItem.module.css';
+import classes from "./CartItem.module.css";
+import { useSelector, useDispatch } from "react-redux";
+import { cartActions } from "../../store/store";
 
 const CartItem = (props) => {
-  const { title, quantity, total, price } = props.item;
+  const cartItems = useSelector((state) => state.cart.items);
+  const dispatch = useDispatch();
 
-  return (
-    <li className={classes.item}>
-      <header>
-        <h3>{title}</h3>
-        <div className={classes.price}>
-          ${total.toFixed(2)}{' '}
-          <span className={classes.itemprice}>(${price.toFixed(2)}/item)</span>
+  const decreaseButtonHandler = () => {
+    dispatch(cartActions.decrease());
+  };
+  const cartItemsJSX = cartItems.map((item) => {
+    const increaseButtonHandler = () => {
+      dispatch(cartActions.increase(item));
+    };
+    return (
+      <li key={item.key} className={classes.item}>
+        <header>
+          <h3>{item.name}</h3>
+          <div className={classes.price}>
+            ${item.price.toFixed(2)}{" "}
+            <span className={classes.itemprice}>
+              (${item.price.toFixed(2)}/item)
+            </span>
+          </div>
+        </header>
+        <div className={classes.details}>
+          <div className={classes.quantity}>
+            x <span>{item.amount}</span>
+          </div>
+          <div className={classes.actions}>
+            <button onClick={decreaseButtonHandler}>-</button>
+            <button onClick={increaseButtonHandler}>+</button>
+          </div>
         </div>
-      </header>
-      <div className={classes.details}>
-        <div className={classes.quantity}>
-          x <span>{quantity}</span>
-        </div>
-        <div className={classes.actions}>
-          <button>-</button>
-          <button>+</button>
-        </div>
-      </div>
-    </li>
-  );
+      </li>
+    );
+  });
+
+  return cartItemsJSX;
 };
 
 export default CartItem;
