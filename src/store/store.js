@@ -14,24 +14,47 @@ const cartSlice = createSlice({
       state.showing = !state.showing;
     },
     increase(state, action) {
-      console.log(action.payload);
-      action.payload.amount = action.payload.amount + 1;
       state.quantity = state.quantity + 1;
+      console.log(action.payload.quantity);
+      action.payload.quantity = action.payload.quantity + 1;
+      console.log(action.payload.quantity);
     },
-    decrease(state) {
+    decrease(state, action) {
+      const id = action.payload.id;
+      const existingItem = state.items.find((item) => {
+        console.log(item.key);
+        console.log(id);
+        return item.key === id;
+      });
       state.quantity = state.quantity - 1;
-      console.log(state.items);
+      if (existingItem.quantity === 1) {
+        state.items = state.items.filter((item) => item.key !== id);
+        console.log(state.items);
+      } else {
+        existingItem.quantity--;
+        existingItem.price = existingItem.price - existingItem.totalPrice;
+      }
     },
     addToCart(state, action) {
       state.quantity = state.quantity + 1;
-      const hasItem = state.items.some(
+
+      const newItem = action.payload;
+
+      const existingItem = state.items.find(
         (item) => item.name === action.payload.name
       );
-
-      if (!hasItem) {
-        state.items.push(action.payload);
+      console.log(newItem.key);
+      if (existingItem) {
+        existingItem.quantity = existingItem.quantity + 1;
+        existingItem.price = existingItem.price + newItem.price;
       } else {
-        console.log("already in cart");
+        state.items.push({
+          name: newItem.name,
+          price: newItem.price,
+          totalPrice: newItem.totalPrice,
+          quantity: newItem.quantity,
+          key: newItem.key,
+        });
       }
     },
   },
@@ -44,4 +67,5 @@ const store = configureStore({
 });
 
 export const cartActions = cartSlice.actions;
+
 export default store;

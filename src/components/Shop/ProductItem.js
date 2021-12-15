@@ -13,7 +13,8 @@ const ProductItem = (props) => {
         name: title,
         price: price,
         description: description,
-        amount: 1,
+        quantity: 1,
+        totalPrice: price.toFixed(2),
         key: Math.random(),
       })
     );
