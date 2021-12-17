@@ -3,12 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../../store/store";
 
 const CartItem = (props) => {
-  const items = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const { title, quantity, totalPrice, price } = props.item;
 
   const decreaseButtonHandler = () => {
-    console.log(props);
     dispatch(cartActions.decrease({ id: props.item.key, price }));
   };
   const increaseButtonHandler = () => {
