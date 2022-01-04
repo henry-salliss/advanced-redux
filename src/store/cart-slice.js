@@ -48,11 +48,16 @@ const cartSlice = createSlice({
         });
       }
     },
+    replaceCart(state, action) {
+      state.quantity = action.payload.quantity;
+      state.items = action.payload.items;
+    },
   },
 });
 
 export const sendDataToCart = (cart) => {
   return async (dispatch) => {
+    // waiting for data to send
     dispatch(
       uiActions.setNotification({
         status: "pending",
@@ -60,6 +65,7 @@ export const sendDataToCart = (cart) => {
       })
     );
 
+    // sending the PUT request
     const sendingData = async () => {
       const response = await fetch(
         "https://advanced-redux-e87ae-default-rtdb.firebaseio.com/cart.json",
@@ -69,6 +75,8 @@ export const sendDataToCart = (cart) => {
         throw new Error("Data not sent");
       }
     };
+
+    // PUT request is successful
     try {
       await sendingData();
       dispatch(
@@ -78,6 +86,7 @@ export const sendDataToCart = (cart) => {
           title: "Sent",
         })
       );
+      //  PUT request is not successful
     } catch (err) {
       dispatch(
         uiActions.setNotification({

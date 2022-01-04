@@ -3,7 +3,7 @@ import Cart from "./components/Cart/Cart";
 import Layout from "./components/Layout/Layout";
 import Products from "./components/Shop/Products";
 import Notification from "./components/UI/Notification";
-import { sendDataToCart } from "./store/cart-slice";
+import { sendDataToCart, getCartData } from "./store/cart-actions";
 
 import { useSelector, useDispatch } from "react-redux";
 
@@ -15,6 +15,12 @@ function App() {
   const cart = useSelector((state) => state.cart);
   const notification = useSelector((state) => state.ui.notification);
 
+  // load cart from firebase
+  useEffect(() => {
+    dispatch(getCartData());
+  }, [dispatch]);
+
+  // send new cart data to firebase
   useEffect(() => {
     if (isInitial) {
       isInitial = false;
