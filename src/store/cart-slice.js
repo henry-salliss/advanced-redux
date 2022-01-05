@@ -5,6 +5,7 @@ const cartInitialState = {
   showing: false,
   quantity: 0,
   items: [],
+  changed: false,
 };
 
 const cartSlice = createSlice({
@@ -15,6 +16,7 @@ const cartSlice = createSlice({
       state.showing = !state.showing;
     },
     decrease(state, action) {
+      state.changed = true;
       const id = action.payload.id;
       const existingItem = state.items.find((item) => {
         return item.key === id;
@@ -28,6 +30,7 @@ const cartSlice = createSlice({
       }
     },
     addToCart(state, action) {
+      state.changed = true;
       state.quantity = state.quantity + 1;
 
       const newItem = action.payload;

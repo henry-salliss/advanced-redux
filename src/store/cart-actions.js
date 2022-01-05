@@ -74,7 +74,12 @@ export const getCartData = () => {
         })
       );
 
-      dispatch(cartActions.replaceCart(cartData));
+      dispatch(
+        cartActions.replaceCart({
+          items: cartData.items || [],
+          quantity: cartData.quantity || 0,
+        })
+      );
     } catch (err) {
       dispatch(
         uiActions.setNotification({

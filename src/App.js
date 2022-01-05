@@ -14,6 +14,7 @@ function App() {
   const showing = useSelector((state) => state.cart.showing);
   const cart = useSelector((state) => state.cart);
   const notification = useSelector((state) => state.ui.notification);
+  const changed = useSelector((state) => state.cart.changed);
 
   // load cart from firebase
   useEffect(() => {
@@ -26,8 +27,10 @@ function App() {
       isInitial = false;
       return;
     }
-    dispatch(sendDataToCart(cart));
-  }, [cart, dispatch]);
+    if (changed) {
+      dispatch(sendDataToCart(cart));
+    }
+  }, [cart, dispatch, changed]);
 
   return (
     <Fragment>
